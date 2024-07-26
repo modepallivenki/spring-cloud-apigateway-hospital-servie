@@ -1,0 +1,22 @@
+server:
+    port: 8082
+
+spring:
+   application:
+      name: spring-cloud-zuul-hospital-servie
+   cloud:
+    gateway:
+      mvc:
+       routes:
+          - id: diagnosis-service
+            uri: http://localhost:8083
+            predicates:
+              - Path=/diagnosis-service/**
+            filters:
+              - RewritePath=/diagnosis-service/?(?<segment>.*), /${segment}
+          - id: doctor-service
+            uri: http://localhost:8081
+            predicates:
+              - Path=/doctor-service/**
+            filters:
+              - RewritePath=/doctor-service/?(?<segment>.*), /${segment}
